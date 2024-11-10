@@ -49,6 +49,7 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.PUT, "/v1/signup/{userId}/").permitAll()
                                         .requestMatchers("/v1/login/").permitAll()
                                         .requestMatchers("/api-docs/**").permitAll()
+                                        .requestMatchers("/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->

@@ -1,0 +1,98 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${mongo_username}
+      - MONGO_INITDB_ROOT_PASSWORD=${mongo_password}
+    ports:
+      - "27017:27017"
+    # volumes:
+    #   - mongodb:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${rabbitmq_username}
+      - RABBITMQ_DEFAULT_PASS=${rabbitmq_password}
+      - RABBITMQ_DEFAULT_VHOST=${rabbitmq_vhost}
+    # volumes:
+    #   - rabbitmq:/var/lib/rabbitmq
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${db_username}
+      - POSTGRES_PASSWORD=${db_password}
+      - POSTGRES_DB=${db_name}
+    ports:
+      - "5433:5432"
+    # volumes:
+    #   - postgres:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: elastic
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+#    volumes:
+#      - esdata:/usr/share/elasticsearch/data
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.3
+    container_name: logstash
+    environment:
+      - LS_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "5044:5044"
+    volumes:
+#      - ./logstash/logstash.conf:/usr/share/logstash/config/logstash.conf:ro
+#      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logs:/usr/share/logstash/logs:ro
+
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elastic:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+      - logstash
+
+
+  axonserver:
+    image: axoniq/axonserver:latest
+    container_name: axon-server
+    ports:
+      - "8024:8024" # UI
+      - "8124:8124"
+#    volumes:
+#      - axon_data:/data
+#      - axon_events:/eventdata
+    environment:
+      - AXONIQ_AXONSERVER_NAME=${AXON_SERVER_HOST}
+      - AXONIQ_AXONSERVER_DEVMODE_ENABLED=${AXON_SERVER_DEVMODE_ENABLED}
+
+
+# volumes:
+#   mongodb:
+#   rabbitmq:
+#   postgres:
+#   esdata:
+
