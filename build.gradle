@@ -65,7 +65,7 @@ dependencies {
 	implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
 
 	// axom config
-//	implementation 'org.axonframework:axon-spring-boot-starter:4.10.2'
+	implementation 'org.axonframework:axon-spring-boot-starter:4.10.1'
 
 
 }

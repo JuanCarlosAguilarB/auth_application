@@ -83,12 +83,14 @@ services:
       - "8024:8024" # UI
       - "8124:8124"
 #    volumes:
+#      - ./cluster-template.yml:/axonserver/config/axonserver.yaml
 #      - axon_data:/data
 #      - axon_events:/eventdata
-    environment:
-      - AXONIQ_AXONSERVER_NAME=${AXON_SERVER_HOST}
-      - AXONIQ_AXONSERVER_DEVMODE_ENABLED=${AXON_SERVER_DEVMODE_ENABLED}
-
+#    environment:
+##      - AXONIQ_AXONSERVER_NAME=${AXON_SERVER_HOST}
+#        - AXONIQ_AXONSERVER_DEVMODE_ENABLED=${AXON_SERVER_DEVMODE_ENABLED}
+#      - AXONIQ_AXONSERVER_NAME=host.docker.internal
+#      - AXONIQ_AXONSERVER_RECOVERY=true
 
 # volumes:
 #   mongodb:

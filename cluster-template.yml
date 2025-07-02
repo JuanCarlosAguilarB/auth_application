@@ -1,0 +1,25 @@
+axoniq:
+  axonserver:
+    cluster-template:
+      first: 7624c991e07e:8224
+      users: []
+      replicationGroups:
+      - roles:
+        - node: 7624c991e07e
+          role: PRIMARY
+        contexts:
+        - name: _admin
+          metaData:
+            event.index-format: JUMP_SKIP_INDEX
+            snapshot.index-format: JUMP_SKIP_INDEX
+        name: _admin
+      - roles:
+        - node: 7624c991e07e
+          role: PRIMARY
+        contexts:
+        - name: default
+          metaData:
+            event.index-format: JUMP_SKIP_INDEX
+            snapshot.index-format: JUMP_SKIP_INDEX
+        name: default
+      applications: []

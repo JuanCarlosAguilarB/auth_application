@@ -3,7 +3,6 @@ package com.auth_application.auth.infrastructure.persistence;
 import com.auth_application.auth.domain.UserAuth;
 import com.auth_application.auth.domain.UserAuthEmail;
 import com.auth_application.auth.domain.UserAuthRepository;
-import com.auth_application.auth.infrastructure.mapper.UserAuthMapper;
 import com.auth_application.shared.domain.UserAuthUserName;
 import lombok.AllArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.auth_application.auth.infrastructure.mapper.UserAuthMapper.toEntity;
+import static com.auth_application.auth.infrastructure.persistence.UserAuthMapper.toEntity;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -21,8 +20,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 public class MongoUserAuthRepository implements UserAuthRepository {
 
     private final MongoTemplate mongoTemplate;
-
-
 
     @Override
     public boolean existsByUsername(UserAuthUserName username) {
